@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "spotify.token",
+      "type": "java.lang.String",
+      "description": "Description for spotify.token."
+    }
+  ]
+}
