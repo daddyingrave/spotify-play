@@ -1,4 +1,4 @@
-package com.github.andreyelagin.spotifyplay;
+package com.github.andreyelagin.spotifyplay.handlers;
 
 import com.github.andreyelagin.spotifyplay.allbums.AlbumsService;
 import com.github.andreyelagin.spotifyplay.artists.ArtistsService;

@@ -1,6 +1,11 @@
 spotify:
   token: BQCIkstrZ5FVtT9VgGVVBAmUltrs4ZhNUJS_I0uNDDzGjZ9EeuuxTKDA18zAKyjZC2Ho2hPBm5Mulz63CEds0myP3ZnMIpcTRwO93rRKbrolrM3O93e7jBjXozYoB53Tewltm9KQzpxuNzpABEfEOENwtesDS3OVWX6PN2yWLtf6-l71-8rNSKjY3JGGpsSg_jZf1pTA18VM9kEmQxcjB5rBw1Mn44x4nnE_5NeXJLsjEGjXeNGfrUCSeVgkSlKZnrwtOdhKIEZNUZMHolDK4Q
 
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: qwe123qwe
 logging:
   level:
     root: INFO
