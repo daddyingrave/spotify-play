@@ -1,7 +1,7 @@
 package com.github.andreyelagin.spotifyplay.handlers;
 
-import com.github.andreyelagin.spotifyplay.allbums.AlbumsService;
-import com.github.andreyelagin.spotifyplay.artists.ArtistsService;
+import com.github.andreyelagin.spotifyplay.upstream.AlbumsSpotifyApi;
+import com.github.andreyelagin.spotifyplay.upstream.ArtistsSpotifyApi;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,16 +15,16 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class MainHandler {
 
-  private final ArtistsService artistsService;
-  private final AlbumsService albumsService;
+  private final ArtistsSpotifyApi artistsSpotifyApi;
+  private final AlbumsSpotifyApi albumsSpotifyApi;
 
   public Mono<ServerResponse> test(ServerRequest request) {
     return ServerResponse
         .ok()
-        .body(artistsService
+        .body(artistsSpotifyApi
             .getUserArtistsIds()
             .delayElements(Duration.ofMillis(100))
-            .flatMap(albumsService::getArtistAlbums), AlbumSimplified.class
+            .flatMap(albumsSpotifyApi::getArtistAlbums), AlbumSimplified.class
         );
   }
 }

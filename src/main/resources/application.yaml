@@ -3,9 +3,9 @@ spotify:
 
 spring:
   r2dbc:
-    url: r2dbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: qwe123qwe
+    url: r2dbc:postgresql://localhost:5432/baza_vasiana?schema=spotify
+    username: spotify
+    password: spotify
 logging:
   level:
     root: INFO

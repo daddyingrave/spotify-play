@@ -1,6 +1,5 @@
-package com.github.andreyelagin.spotifyplay.allbums;
+package com.github.andreyelagin.spotifyplay.upstream;
 
-import com.github.andreyelagin.spotifyplay.upstream.SpotifyClient;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Component
 @RequiredArgsConstructor
-public class AlbumsService {
+public class AlbumsSpotifyApi {
 
   private final SpotifyClient client;
 
