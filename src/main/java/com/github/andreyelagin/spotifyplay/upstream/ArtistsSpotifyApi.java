@@ -1,5 +1,6 @@
 package com.github.andreyelagin.spotifyplay.upstream;
 
+import com.github.andreyelagin.spotifyplay.artists.ArtistsRepository;
 import com.wrapper.spotify.model_objects.specification.Artist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +17,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 public class ArtistsSpotifyApi {
 
   private final SpotifyClient client;
+  private final ArtistsRepository artistsRepository;
 
   public Flux<String> getUserArtistsIds() {
     return client.followedArtists(Optional.empty())

@@ -16,6 +16,10 @@ apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 15
 
+compileJava {
+    options.compilerArgs += ['--enable-preview']
+}
+
 group 'com.github.andreyelagin.spotifyplay'
 version '1.0-SNAPSHOT'
 

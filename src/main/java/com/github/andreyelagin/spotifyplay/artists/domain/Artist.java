@@ -1,13 +1,16 @@
 package com.github.andreyelagin.spotifyplay.artists.domain;
 
-import lombok.*;
+import lombok.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static org.springframework.util.StringUtils.isEmpty;
 
 @Value
 @Table("artists")
@@ -15,21 +18,39 @@ public class Artist {
   @Id
   String id;
   String name;
+  @Column("external_urls")
+  List<ExternalUrl> externalUrls;
+  int followers;
   List<String> genres;
-  List<Pair> external_urls;
+  String href;
+  long imageId;
+  short popularity;
+  String uri;
 
   @PersistenceConstructor
-  protected Artist(String id, String name, String[][] external_urls, String[] genres) {
+  public Artist(
+      String id,
+      String name,
+      String[][] externalUrls,
+      int followers,
+      String[] genres,
+      String href,
+      long imageId,
+      short popularity,
+      String uri
+  ) {
     this.id = id;
     this.name = name;
-    this.genres = Arrays.asList(genres.clone());
-    this.external_urls = Arrays.stream(external_urls).map(arr -> new Pair(arr[0], arr[1])).collect(Collectors.toList());
-    System.out.println(Arrays.deepToString(external_urls));
+    this.externalUrls = Arrays
+        .stream(externalUrls)
+        .filter(arr -> arr.length == 2 && !isEmpty(arr[0]) && !isEmpty(arr[1]))
+        .map(arr -> new ExternalUrl(arr[0], arr[1]))
+        .collect(Collectors.toList());
+    this.followers = followers;
+    this.genres = genres != null ? Arrays.asList(genres.clone()) : List.of();
+    this.href = href;
+    this.imageId = imageId;
+    this.popularity = popularity;
+    this.uri = uri;
   }
-}
-
-@Value
-class Pair {
-  String key;
-  String value;
 }
