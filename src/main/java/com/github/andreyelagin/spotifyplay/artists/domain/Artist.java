@@ -1,8 +1,11 @@
 package com.github.andreyelagin.spotifyplay.artists.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
+import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -14,7 +17,9 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Value
 @Table("artists")
-public class Artist {
+@Builder
+@AllArgsConstructor
+public class Artist implements Persistable<String> {
   @Id
   String id;
   String name;
@@ -52,5 +57,10 @@ public class Artist {
     this.imageId = imageId;
     this.popularity = popularity;
     this.uri = uri;
+  }
+
+  @Override
+  public boolean isNew() {
+    return true;
   }
 }
