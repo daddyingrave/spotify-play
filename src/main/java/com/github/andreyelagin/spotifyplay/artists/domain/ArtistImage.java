@@ -7,8 +7,8 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Data
-@Table("artist_images")
 @Builder
+@Table("artists_images")
 @AllArgsConstructor
 public class ArtistImage {
   @Column("artist_id")

@@ -21,7 +21,6 @@ public class MappingConfiguration extends AbstractR2dbcConfiguration {
 
   @Override
   protected List<Object> getCustomConverters() {
-
     List<Object> converterList = new ArrayList<>();
     converterList.add(new ArtistWritingConverter());
     return converterList;

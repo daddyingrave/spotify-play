@@ -11,6 +11,7 @@ import com.github.andreyelagin.spotifyplay.upstream.ArtistsSpotifyApi;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
 import com.wrapper.spotify.model_objects.specification.Artist;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
@@ -30,13 +31,16 @@ public class MainHandler {
   private final ArtistsRepository artistsRepository;
   private final ImageRepository imageRepository;
   private final ArtistImageRepository artistImageRepository;
+  private final DatabaseClient databaseClient;
 
   public Mono<ServerResponse> test(ServerRequest request) {
     var multicastFlux = artistsSpotifyApi
         .getUserArtists()
         .delayElements(Duration.ofMillis(100))
         .share();
-    Flux.from(multicastFlux)
+
+    
+    var some = multicastFlux
         .flatMap(a -> Flux
             .just(Arrays.asList(a.getImages().clone()))
             .map(image -> image
@@ -56,20 +60,26 @@ public class MainHandler {
                 imageRepository.saveAll(images).collectList())
             )
         )
-        .subscribe(t -> artistImageRepository
-            .saveAll(t.getT2().stream()
-                .map(i -> ArtistImage
-                    .builder()
-                    .artistId(t.getT1().getId())
-                    .imageId(i.getId())
-                    .build()
-                )
-                .collect(Collectors.toList())));
+        .map(t -> t.getT2()
+            .stream()
+            .map(i -> ArtistImage
+                .builder()
+                .artistId(t.getT1().getId())
+                .imageId(i.getId())
+                .build())
+            .collect(Collectors.toList()))
+        .flatMap(t -> databaseClient
+            .insert()
+            .into(ArtistImage.class)
+            .using(Flux.fromIterable(t))
+            .fetch()
+            .all())
+        .thenMany(multicastFlux
+            .map(Artist::getId)
+            .flatMap(albumsSpotifyApi::getArtistAlbums));
     return ServerResponse
         .ok()
-        .body(multicastFlux
-            .map(Artist::getId)
-            .flatMap(albumsSpotifyApi::getArtistAlbums), AlbumSimplified.class
+        .body(some, AlbumSimplified.class
         );
   }
 }
