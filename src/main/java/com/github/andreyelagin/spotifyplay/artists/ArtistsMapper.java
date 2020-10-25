@@ -1,5 +1,6 @@
 package com.github.andreyelagin.spotifyplay.artists;
 
+import com.github.andreyelagin.spotifyplay.artists.domain.ArtistEntity;
 import com.github.andreyelagin.spotifyplay.artists.domain.ExternalUrl;
 import com.wrapper.spotify.model_objects.specification.Artist;
 
@@ -7,8 +8,8 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class ArtistsMapper {
-  public static com.github.andreyelagin.spotifyplay.artists.domain.Artist toArtist(Artist artist) {
-    return com.github.andreyelagin.spotifyplay.artists.domain.Artist.builder()
+  public static ArtistEntity toArtist(Artist artist) {
+    return ArtistEntity.builder()
         .id(artist.getId())
         .name(artist.getName())
         .externalUrls(artist

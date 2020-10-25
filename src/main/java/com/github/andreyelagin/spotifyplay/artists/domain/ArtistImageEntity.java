@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Builder
 @Table("artists_images")
 @AllArgsConstructor
-public class ArtistImage {
+public class ArtistImageEntity {
   @Column("artist_id")
   String artistId;
   @Column("image_id")

@@ -1,23 +1,25 @@
 package com.github.andreyelagin.spotifyplay.configuration;
 
 import com.github.andreyelagin.spotifyplay.artists.domain.ArtistWritingConverter;
-import io.r2dbc.spi.ConnectionFactories;
 import io.r2dbc.spi.ConnectionFactory;
-import io.r2dbc.spi.ConnectionFactoryOptions;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
+import org.springframework.data.r2dbc.connectionfactory.R2dbcTransactionManager;
+import org.springframework.transaction.ReactiveTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
-public class MappingConfiguration extends AbstractR2dbcConfiguration {
+@EnableTransactionManagement
+public abstract class DatabaseConfiguration extends AbstractR2dbcConfiguration {
 
-  public ConnectionFactory connectionFactory() {
-    return ConnectionFactories.get(ConnectionFactoryOptions.builder().build());
+  @Bean
+  ReactiveTransactionManager transactionManager(ConnectionFactory connectionFactory) {
+    return new R2dbcTransactionManager(connectionFactory);
   }
-
 
   @Override
   protected List<Object> getCustomConverters() {

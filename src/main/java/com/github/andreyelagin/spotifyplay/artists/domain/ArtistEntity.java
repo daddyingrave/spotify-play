@@ -19,7 +19,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Table("artists")
 @Builder
 @AllArgsConstructor
-public class Artist implements Persistable<String> {
+public class ArtistEntity implements Persistable<String> {
   @Id
   String id;
   String name;
@@ -33,7 +33,7 @@ public class Artist implements Persistable<String> {
   String uri;
 
   @PersistenceConstructor
-  public Artist(
+  public ArtistEntity(
       String id,
       String name,
       String[][] externalUrls,

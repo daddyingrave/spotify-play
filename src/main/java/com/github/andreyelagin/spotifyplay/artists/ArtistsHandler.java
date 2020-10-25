@@ -1,8 +1,6 @@
 package com.github.andreyelagin.spotifyplay.artists;
 
-import com.github.andreyelagin.spotifyplay.artists.domain.Artist;
-import com.github.andreyelagin.spotifyplay.domain.User;
-import com.github.andreyelagin.spotifyplay.repositories.UserRepository;
+import com.github.andreyelagin.spotifyplay.artists.domain.ArtistEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -18,6 +16,6 @@ public class ArtistsHandler {
   public Mono<ServerResponse> getAllArtists(ServerRequest request) {
     return ServerResponse
         .ok()
-        .body(artistsRepository.getAllArtists(), Artist.class);
+        .body(artistsRepository.findAll(), ArtistEntity.class);
   }
 }

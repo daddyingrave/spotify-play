@@ -20,6 +20,10 @@ compileJava {
     options.compilerArgs += ['--enable-preview']
 }
 
+compileTestJava {
+    options.compilerArgs += ['--enable-preview']
+}
+
 group 'com.github.andreyelagin.spotifyplay'
 version '1.0-SNAPSHOT'
 
@@ -30,6 +34,7 @@ repositories {
 dependencies {
     implementation          'org.springframework.boot:spring-boot-starter-webflux'
     implementation          'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation          'io.projectreactor.addons:reactor-extra:3.3.4.RELEASE'
     implementation          'io.github.resilience4j:resilience4j-ratelimiter:1.6.1'
     implementation          'io.github.resilience4j:resilience4j-reactor:1.6.1'
     implementation          'se.michaelthelin.spotify:spotify-web-api-java:6.4.0'

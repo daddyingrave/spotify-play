@@ -4,8 +4,8 @@ import com.github.andreyelagin.spotifyplay.artists.ArtistImageRepository;
 import com.github.andreyelagin.spotifyplay.artists.ArtistsMapper;
 import com.github.andreyelagin.spotifyplay.artists.ArtistsRepository;
 import com.github.andreyelagin.spotifyplay.artists.ImageRepository;
-import com.github.andreyelagin.spotifyplay.artists.domain.ArtistImage;
-import com.github.andreyelagin.spotifyplay.artists.domain.Image;
+import com.github.andreyelagin.spotifyplay.artists.domain.ArtistImageEntity;
+import com.github.andreyelagin.spotifyplay.artists.domain.ImageEntity;
 import com.github.andreyelagin.spotifyplay.upstream.AlbumsSpotifyApi;
 import com.github.andreyelagin.spotifyplay.upstream.ArtistsSpotifyApi;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
@@ -34,52 +34,45 @@ public class MainHandler {
   private final DatabaseClient databaseClient;
 
   public Mono<ServerResponse> test(ServerRequest request) {
-    var multicastFlux = artistsSpotifyApi
+    var huy = artistsSpotifyApi
         .getUserArtists()
+        .flatMap(this::persistArtist)
+        .map(Artist::getId)
         .delayElements(Duration.ofMillis(100))
-        .share();
+        .flatMap(albumsSpotifyApi::getArtistAlbums);
 
-    
-    var some = multicastFlux
-        .flatMap(a -> Flux
-            .just(Arrays.asList(a.getImages().clone()))
-            .map(image -> image
-                .stream()
-                .map(i -> Image
-                    .builder()
-                    .height(i.getHeight())
-                    .width(i.getWidth())
-                    .url(i.getUrl())
-                    .build()
-                )
-                .collect(Collectors.toList())
+    return ServerResponse
+        .ok()
+        .body(huy, AlbumSimplified.class);
+  }
 
-            )
-            .flatMap(images -> Flux.zip(
-                artistsRepository.save(ArtistsMapper.toArtist(a)),
-                imageRepository.saveAll(images).collectList())
-            )
+  private Flux<Artist> persistArtist(Artist artist) {
+    return Flux
+        .just(Arrays.asList(artist.getImages()))
+        .map(image -> image
+            .stream()
+            .map(ImageEntity::fromSpotify)
+            .collect(Collectors.toList())
+        )
+        .flatMap(images -> Flux.zip(
+            artistsRepository.save(ArtistsMapper.toArtist(artist)),
+            imageRepository.saveAll(images).collectList())
         )
         .map(t -> t.getT2()
-            .stream()
-            .map(i -> ArtistImage
-                .builder()
-                .artistId(t.getT1().getId())
-                .imageId(i.getId())
-                .build())
-            .collect(Collectors.toList()))
+        .stream()
+        .map(i -> ArtistImageEntity
+            .builder()
+            .artistId(t.getT1().getId())
+            .imageId(i.getId())
+            .build())
+        .collect(Collectors.toList()))
         .flatMap(t -> databaseClient
             .insert()
-            .into(ArtistImage.class)
+            .into(ArtistImageEntity.class)
             .using(Flux.fromIterable(t))
             .fetch()
             .all())
-        .thenMany(multicastFlux
-            .map(Artist::getId)
-            .flatMap(albumsSpotifyApi::getArtistAlbums));
-    return ServerResponse
-        .ok()
-        .body(some, AlbumSimplified.class
-        );
+        .flatMap(m -> Flux.just(artist))
+        .distinct();
   }
 }
