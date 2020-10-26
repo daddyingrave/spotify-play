@@ -14,11 +14,16 @@ import java.util.List;
 
 @Configuration
 @EnableTransactionManagement
-public abstract class DatabaseConfiguration extends AbstractR2dbcConfiguration {
+public class DatabaseConfiguration extends AbstractR2dbcConfiguration {
 
   @Bean
   ReactiveTransactionManager transactionManager(ConnectionFactory connectionFactory) {
     return new R2dbcTransactionManager(connectionFactory);
+  }
+
+  @Override
+  public ConnectionFactory connectionFactory() {
+    return null;
   }
 
   @Override

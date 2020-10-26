@@ -1,9 +1,6 @@
 package com.github.andreyelagin.spotifyplay.handlers;
 
-import com.github.andreyelagin.spotifyplay.artists.ArtistImageRepository;
-import com.github.andreyelagin.spotifyplay.artists.ArtistsMapper;
-import com.github.andreyelagin.spotifyplay.artists.ArtistsRepository;
-import com.github.andreyelagin.spotifyplay.artists.ImageRepository;
+import com.github.andreyelagin.spotifyplay.artists.*;
 import com.github.andreyelagin.spotifyplay.artists.domain.ArtistImageEntity;
 import com.github.andreyelagin.spotifyplay.artists.domain.ImageEntity;
 import com.github.andreyelagin.spotifyplay.upstream.AlbumsSpotifyApi;
@@ -32,12 +29,12 @@ public class MainHandler {
   private final ImageRepository imageRepository;
   private final ArtistImageRepository artistImageRepository;
   private final DatabaseClient databaseClient;
+  private final ArtistDao artistDao;
 
   public Mono<ServerResponse> test(ServerRequest request) {
     var huy = artistsSpotifyApi
         .getUserArtists()
-        .flatMap(this::persistArtist)
-        .map(Artist::getId)
+        .flatMap(artistDao::persist)
         .delayElements(Duration.ofMillis(100))
         .flatMap(albumsSpotifyApi::getArtistAlbums);
 

@@ -1,4 +1,4 @@
-package com.github.andreyelagin.spotifyplay.artists.domain;
+package com.github.andreyelagin.spotifyplay.allbums.domain;
 
 import com.github.andreyelagin.spotifyplay.domain.ExternalUrl;
 import lombok.AllArgsConstructor;
@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Value;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.PersistenceConstructor;
-import org.springframework.data.domain.Persistable;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
@@ -17,60 +16,58 @@ import java.util.stream.Collectors;
 import static org.springframework.util.StringUtils.isEmpty;
 
 @Value
-@Table("artists")
+@Table("albums")
 @Builder
 @AllArgsConstructor
-public class ArtistEntity implements Persistable<String> {
+public class AlbumEntity {
   @Id
   String id;
 
-  String name;
+  @Column("albums_group")
+  String albumsGroup;
+
+  @Column("album_type")
+  String albumType;
+
+  @Column("available_markets")
+  List<String> availableMarkets;
 
   @Column("external_urls")
   List<ExternalUrl> externalUrls;
 
-  int followers;
-
-  List<String> genres;
-
   String href;
 
-  long imageId;
+  String name;
 
-  short popularity;
+  String type;
 
   String uri;
 
   @PersistenceConstructor
-  public ArtistEntity(
+  public AlbumEntity(
       String id,
-      String name,
+      String albumsGroup,
+      String albumType,
+      String[] availableMarkets,
       String[][] externalUrls,
-      int followers,
-      String[] genres,
       String href,
-      long imageId,
-      short popularity,
+      String name,
+      String type,
       String uri
   ) {
     this.id = id;
-    this.name = name;
+    this.albumsGroup = albumsGroup;
+    this.albumType = albumType;
+    this.availableMarkets = Arrays.asList(availableMarkets);
     this.externalUrls = Arrays
         .stream(externalUrls)
         .filter(arr -> arr.length == 2 && !isEmpty(arr[0]) && !isEmpty(arr[1]))
         .map(arr -> new ExternalUrl(arr[0], arr[1]))
         .collect(Collectors.toList());
-    this.followers = followers;
-    this.genres = genres != null ? Arrays.asList(genres.clone()) : List.of();
     this.href = href;
-    this.imageId = imageId;
-    this.popularity = popularity;
+    this.name = name;
+    this.type = type;
     this.uri = uri;
   }
 
-  // todo fix
-  @Override
-  public boolean isNew() {
-    return true;
-  }
 }

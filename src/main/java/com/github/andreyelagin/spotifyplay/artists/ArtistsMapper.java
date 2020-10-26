@@ -1,7 +1,7 @@
 package com.github.andreyelagin.spotifyplay.artists;
 
 import com.github.andreyelagin.spotifyplay.artists.domain.ArtistEntity;
-import com.github.andreyelagin.spotifyplay.artists.domain.ExternalUrl;
+import com.github.andreyelagin.spotifyplay.domain.ExternalUrl;
 import com.wrapper.spotify.model_objects.specification.Artist;
 
 import java.util.Arrays;
