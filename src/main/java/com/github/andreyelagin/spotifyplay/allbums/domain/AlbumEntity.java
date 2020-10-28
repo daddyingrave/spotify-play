@@ -43,6 +43,12 @@ public class AlbumEntity {
 
   String uri;
 
+  @Column("release_date")
+  String releaseDate;
+
+  @Column("release_date_precision")
+  DatePrecision releaseDatePrecision;
+
   @PersistenceConstructor
   public AlbumEntity(
       String id,
@@ -53,7 +59,9 @@ public class AlbumEntity {
       String href,
       String name,
       String type,
-      String uri
+      String uri,
+      String releaseDate,
+      String releaseDatePrecision
   ) {
     this.id = id;
     this.albumsGroup = albumsGroup;
@@ -68,6 +76,7 @@ public class AlbumEntity {
     this.name = name;
     this.type = type;
     this.uri = uri;
+    this.releaseDate = releaseDate;
+    this.releaseDatePrecision = DatePrecision.valueOf(releaseDatePrecision);
   }
-
 }

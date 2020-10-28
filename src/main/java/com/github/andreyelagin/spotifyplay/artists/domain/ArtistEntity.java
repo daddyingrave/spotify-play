@@ -20,7 +20,7 @@ import static org.springframework.util.StringUtils.isEmpty;
 @Table("artists")
 @Builder
 @AllArgsConstructor
-public class ArtistEntity implements Persistable<String> {
+public class ArtistEntity {
   @Id
   String id;
 
@@ -68,9 +68,12 @@ public class ArtistEntity implements Persistable<String> {
     this.uri = uri;
   }
 
-  // todo fix
-  @Override
-  public boolean isNew() {
-    return true;
+  public String[][] urlsAsArray() {
+    var arr = new String[externalUrls.size()][];
+    for (int i = 0; i < externalUrls.size(); i++) {
+      var url = externalUrls.get(i);
+      arr[i] = new String[]{url.getName(), url.getUrl()};
+    }
+    return arr;
   }
 }

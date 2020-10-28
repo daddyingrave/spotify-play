@@ -58,7 +58,7 @@ public class ArtistDao {
         )
         .bind("id", artist.getId())
         .bind("name", artist.getName())
-        .bind("external_urls", new String[][]{{"", ""}})
+        .bind("external_urls", artist.urlsAsArray())
         .bind("followers", artist.getFollowers())
         .bind("genres", artist.getGenres().toArray(new String[0]))
         .bind("href", artist.getHref())
