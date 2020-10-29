@@ -1,6 +1,5 @@
-package com.github.andreyelagin.spotifyplay.artists;
+package com.github.andreyelagin.spotifyplay.upstream;
 
-import com.github.andreyelagin.spotifyplay.upstream.SpotifyClient;
 import com.wrapper.spotify.model_objects.specification.Artist;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -14,11 +13,11 @@ import static org.springframework.util.StringUtils.isEmpty;
 
 @Component
 @RequiredArgsConstructor
-public class ArtistsService {
+public class ArtistsSpotifyApi {
 
   private final SpotifyClient client;
 
-  public Flux<String> getUserArtistsIds() {
+  public Flux<Artist> getUserArtists() {
     return client.followedArtists(Optional.empty())
         .expand(cursor -> {
           if (!isEmpty(cursor.getNext())) {
@@ -30,7 +29,6 @@ public class ArtistsService {
         })
         .flatMap(artists -> Flux.fromIterable(Arrays
             .stream(artists.getItems())
-            .map(Artist::getId)
             .collect(Collectors.toList())));
   }
 }

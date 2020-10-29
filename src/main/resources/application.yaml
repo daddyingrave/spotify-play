@@ -1,6 +1,11 @@
 spotify:
-  token: BQCIkstrZ5FVtT9VgGVVBAmUltrs4ZhNUJS_I0uNDDzGjZ9EeuuxTKDA18zAKyjZC2Ho2hPBm5Mulz63CEds0myP3ZnMIpcTRwO93rRKbrolrM3O93e7jBjXozYoB53Tewltm9KQzpxuNzpABEfEOENwtesDS3OVWX6PN2yWLtf6-l71-8rNSKjY3JGGpsSg_jZf1pTA18VM9kEmQxcjB5rBw1Mn44x4nnE_5NeXJLsjEGjXeNGfrUCSeVgkSlKZnrwtOdhKIEZNUZMHolDK4Q
+  token: BQBJkRzHRItiyttljAyy-5MI0odaQn8kr4BXOnOki7Io0U4tRMtniA9hNVZD1urrQEdzPLnA2Q8BJbAg5_kIZBe737E5uulI8OeXSAQAKIetvxG1n8LthzmazL-k7hc7vOaaoAv_IOjA3jGPA8YCE63R1ZD6xC6wQXrRlAjjS12MMltH9fAsfFaa2XWcLsc4T4glfcxXisyrGnd_P7D1ZVryxlhSqBeRbwLnjebksHPLIhv5BYbVsWT6Ut-snoRVf70-JuweqMmuU-I_2ntv7w
 
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/baza_vasiana?schema=spotify
+    username: spotify
+    password: spotify
 logging:
   level:
     root: INFO

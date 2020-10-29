@@ -16,6 +16,14 @@ apply plugin: 'io.spring.dependency-management'
 
 sourceCompatibility = 15
 
+compileJava {
+    options.compilerArgs += ['--enable-preview']
+}
+
+compileTestJava {
+    options.compilerArgs += ['--enable-preview']
+}
+
 group 'com.github.andreyelagin.spotifyplay'
 version '1.0-SNAPSHOT'
 
@@ -25,10 +33,13 @@ repositories {
 
 dependencies {
     implementation          'org.springframework.boot:spring-boot-starter-webflux'
-    implementation          'se.michaelthelin.spotify:spotify-web-api-java:6.4.0'
+    implementation          'org.springframework.boot:spring-boot-starter-data-r2dbc'
+    implementation          'io.projectreactor.addons:reactor-extra:3.3.4.RELEASE'
     implementation          'io.github.resilience4j:resilience4j-ratelimiter:1.6.1'
     implementation          'io.github.resilience4j:resilience4j-reactor:1.6.1'
-    implementation          'io.projectreactor.addons:reactor-extra:3.3.4.RELEASE'
+    implementation          'se.michaelthelin.spotify:spotify-web-api-java:6.4.0'
+    implementation          'io.r2dbc:r2dbc-postgresql'
+    implementation          'org.postgresql:postgresql'
 
     annotationProcessor     'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor     'org.projectlombok:lombok:1.18.14'
@@ -37,8 +48,12 @@ dependencies {
     testCompileOnly         'org.projectlombok:lombok:1.18.14'
 
     testCompile             'org.springframework.boot:spring-boot-starter-test'
+    testCompile             'io.projectreactor:reactor-test'
     testCompile             'org.junit.jupiter:junit-jupiter:5.6.1'
     testCompile             'org.hamcrest:hamcrest:2.2'
+    testCompile             ('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
 }
 
 test {
