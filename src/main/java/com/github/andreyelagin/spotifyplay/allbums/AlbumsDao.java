@@ -1,5 +1,6 @@
 package com.github.andreyelagin.spotifyplay.allbums;
 
+import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.model_objects.specification.AlbumSimplified;
 import com.wrapper.spotify.model_objects.specification.Image;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -66,13 +68,18 @@ public class AlbumsDao {
     if (album.getAvailableMarkets() == null) {
       bind = bind.bindNull("available_markets", String[].class);
     } else {
-      bind = bind.bind("available_markets", album.getAvailableMarkets());
+      List<String> list = new ArrayList<>();
+      for (CountryCode countryCode : album.getAvailableMarkets()) {
+        String alpha2 = countryCode.getAlpha2();
+        list.add(alpha2);
+      }
+      bind = bind.bind("available_markets", list.toArray(new String[0]));
     }
 
-    if (album.getAlbumType().getType() == null) {
+    if (album.getType().getType() == null) {
       bind = bind.bindNull("type", String.class);
     } else {
-      bind = bind.bind("type", album.getAlbumType().getType());
+      bind = bind.bind("type", album.getType().getType());
     }
 
     return bind
@@ -80,7 +87,7 @@ public class AlbumsDao {
         .bind("href", album.getHref())
         .bind("name", album.getName())
         .bind("uri", album.getUri())
-        .bind("release_date_precision", album.getReleaseDatePrecision())
+        .bind("release_date_precision", album.getReleaseDatePrecision().getPrecision())
         .bind("release_date", album.getReleaseDate())
         .map(row -> row.get("id", String.class))
         .one();

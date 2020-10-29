@@ -1,6 +1,5 @@
 package com.github.andreyelagin.spotifyplay.upstream;
 
-import com.neovisionaries.i18n.CountryCode;
 import com.wrapper.spotify.SpotifyApi;
 import com.wrapper.spotify.enums.ModelObjectType;
 import com.wrapper.spotify.model_objects.specification.*;
@@ -25,9 +24,8 @@ public class SpotifyClient {
   public Mono<Paging<AlbumSimplified>> artistAlbums(String artistId, int offset) {
     return Mono.fromFuture(() -> api
         .getArtistsAlbums(artistId)
-        .market(CountryCode.RU)
         .limit(50)
-        .album_type("album")
+        .album_type("single,album,appears_on")
         .offset(offset)
         .build()
         .executeAsync());
@@ -36,7 +34,6 @@ public class SpotifyClient {
   public Mono<Paging<TrackSimplified>> albumsTracks(String albumId, int offset) {
     return Mono.fromFuture(() -> api
         .getAlbumsTracks(albumId)
-        .market(CountryCode.RU)
         .limit(50)
         .offset(offset)
         .build()

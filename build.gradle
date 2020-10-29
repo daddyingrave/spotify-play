@@ -38,9 +38,8 @@ dependencies {
     implementation          'io.github.resilience4j:resilience4j-ratelimiter:1.6.1'
     implementation          'io.github.resilience4j:resilience4j-reactor:1.6.1'
     implementation          'se.michaelthelin.spotify:spotify-web-api-java:6.4.0'
-
-    runtimeOnly             'io.r2dbc:r2dbc-postgresql'
-    runtimeOnly             'org.postgresql:postgresql'
+    implementation          'io.r2dbc:r2dbc-postgresql'
+    implementation          'org.postgresql:postgresql'
 
     annotationProcessor     'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor     'org.projectlombok:lombok:1.18.14'
