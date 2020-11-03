@@ -1,4 +1,4 @@
-package com.github.andreyelagin.spotifyplay.handlers;
+package com.github.andreyelagin.spotifyplay.rest;
 
 import com.github.andreyelagin.spotifyplay.domain.User;
 import com.github.andreyelagin.spotifyplay.repositories.UserRepository;

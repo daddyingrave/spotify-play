@@ -21,7 +21,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class MainRouterTest {
+public class RouterTest {
   @Autowired
   private AlbumsSpotifyApi albumsSpotifyApi;
 

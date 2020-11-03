@@ -1,8 +1,7 @@
-package com.github.andreyelagin.spotifyplay;
+package com.github.andreyelagin.spotifyplay.rest;
 
-import com.github.andreyelagin.spotifyplay.artists.ArtistsHandler;
-import com.github.andreyelagin.spotifyplay.handlers.MainHandler;
-import com.github.andreyelagin.spotifyplay.handlers.UserHandler;
+import com.github.andreyelagin.spotifyplay.rest.MainHandler;
+import com.github.andreyelagin.spotifyplay.rest.UserHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,11 +14,10 @@ import static org.springframework.web.reactive.function.server.RequestPredicates
 
 @Configuration
 @RequiredArgsConstructor
-public class MainRouter {
+public class Router {
 
   private final MainHandler mainHandler;
   private final UserHandler userHandler;
-  private final ArtistsHandler artistsHandler;
 
   @Bean
   public RouterFunction<ServerResponse> route() {
@@ -29,7 +27,6 @@ public class MainRouter {
         .GET("/users", accept(MediaType.ALL), userHandler::getAllUsers)
         .POST("/users", accept(MediaType.APPLICATION_JSON), userHandler::createUser)
 
-        .GET("/artists", accept(MediaType.ALL), artistsHandler::getAllArtists)
         .build();
   }
 }

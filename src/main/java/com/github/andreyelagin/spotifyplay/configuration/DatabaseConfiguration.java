@@ -1,6 +1,5 @@
 package com.github.andreyelagin.spotifyplay.configuration;
 
-import com.github.andreyelagin.spotifyplay.artists.domain.ArtistWritingConverter;
 import com.wrapper.spotify.enums.ReleaseDatePrecision;
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration;
 import io.r2dbc.postgresql.PostgresqlConnectionFactory;
@@ -12,9 +11,6 @@ import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration;
 import org.springframework.data.r2dbc.connectionfactory.R2dbcTransactionManager;
 import org.springframework.transaction.ReactiveTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 @EnableTransactionManagement
@@ -40,12 +36,5 @@ public class DatabaseConfiguration extends AbstractR2dbcConfiguration {
             .build()
         ).build();
     return new PostgresqlConnectionFactory(conf);
-  }
-
-  @Override
-  protected List<Object> getCustomConverters() {
-    List<Object> converterList = new ArrayList<>();
-    converterList.add(new ArtistWritingConverter());
-    return converterList;
   }
 }
