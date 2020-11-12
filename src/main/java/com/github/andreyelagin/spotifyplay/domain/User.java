@@ -1,19 +1,21 @@
 package com.github.andreyelagin.spotifyplay.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.time.LocalDateTime;
+
 @Data
+@Builder(toBuilder = true)
 @AllArgsConstructor
-@NoArgsConstructor
 @Table("users")
 public class User {
   @Id
-  private Integer id;
-  private String name;
-  private String email;
-  private String token;
+  Long id;
+  String name;
+  String email;
+  String token;
+  String refreshToken;
+  LocalDateTime expiresIn;
 }

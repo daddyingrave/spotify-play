@@ -1,7 +1,7 @@
 package com.github.andreyelagin.spotifyplay.rest;
 
 import com.github.andreyelagin.spotifyplay.domain.User;
-import com.github.andreyelagin.spotifyplay.repositories.UserRepository;
+import com.github.andreyelagin.spotifyplay.repositories.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -12,19 +12,23 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class UserHandler {
 
-  private final UserRepository userRepository;
-
-  public Mono<ServerResponse> getAllUsers(ServerRequest request) {
-    return ServerResponse
-        .ok()
-        .body(userRepository.getAllUsers(), User.class);
-  }
+  private final UsersRepository usersRepository;
 
   public Mono<ServerResponse> createUser(ServerRequest request) {
     return request.bodyToMono(User.class)
         .flatMap(u -> ServerResponse
             .ok()
-            .body(userRepository.insertUser(u), Void.class)
+            .body(usersRepository.save(u), User.class)
+        );
+  }
+
+  public Mono<ServerResponse> getUser(ServerRequest request) {
+    return Mono
+        .just(request.queryParam("email").orElseThrow())
+        .flatMap(email ->
+            ServerResponse
+                .ok()
+                .body(usersRepository.findByEmail(email), User.class)
         );
   }
 }

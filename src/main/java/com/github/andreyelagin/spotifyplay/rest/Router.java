@@ -1,7 +1,5 @@
 package com.github.andreyelagin.spotifyplay.rest;
 
-import com.github.andreyelagin.spotifyplay.rest.MainHandler;
-import com.github.andreyelagin.spotifyplay.rest.UserHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +22,7 @@ public class Router {
     return RouterFunctions.route()
         .GET("/test", accept(MediaType.ALL), mainHandler::test)
 
-        .GET("/users", accept(MediaType.ALL), userHandler::getAllUsers)
+        .GET("/users", accept(MediaType.ALL), userHandler::getUser)
         .POST("/users", accept(MediaType.APPLICATION_JSON), userHandler::createUser)
 
         .build();
